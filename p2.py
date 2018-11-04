@@ -3,6 +3,8 @@ import quandl
 import math
 import numpy as np 
 from sklearn import preprocessing, svm 
+from sklearn.model_selection import cross_val_score,train_test_split
+
 from sklearn.linear_model import LinearRegression
 
 
@@ -17,7 +19,7 @@ df=df[['Adj. Close','ML_PCT','PCT_Change','Adj. Volume']]
 forecast_col= 'Adj. Close'
 df.fillna(-99999,inplace=True)
 
-forecast_out = int(math.ceil(0.1*len(df)))
+forecast_out = int(math.ceil(0.001*len(df)))
 
 df['label'] = df[forecast_col].shift(-forecast_out)
 df.dropna(inplace=True)
@@ -28,10 +30,15 @@ df.dropna(inplace=True)
 X = np.array(df.drop(['label'],1))
 y = np.array(df['label'])
 X = preprocessing.scale(X)
-
-X = X[:-forecast_out+1]
-df.dropna(inplace=True)
+# X = X[:-forecast_out+1]
+# df.dropna(inplace=True)
 y = np.array(df['label'])
 
 # print(len(X),len(y))
+X_train, X_test,y_train,y_test = train_test_split(X,y,test_size=0.2,random_state=42)
 
+classifier = LinearRegression()
+classifier.fit(X_train,y_train)
+accuracy = classifier.score(X_test,y_test)
+
+print ("Acccuracy:",accuracy)
