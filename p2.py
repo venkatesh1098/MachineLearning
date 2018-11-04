@@ -1,12 +1,14 @@
 import pandas as pd
 import quandl
-import math
+import math,datetime
 import numpy as np 
 from sklearn import preprocessing, svm 
 from sklearn.model_selection import cross_val_score,train_test_split
-
 from sklearn.linear_model import LinearRegression
 
+import matplotlib.pyplot as plt
+from matplotlib import style
+style.use('ggplot')
 
 df=quandl.get('WIKI/GOOGL')
 df = df[['Adj. Open','Adj. High','Adj. Low','Adj. Close','Adj. Volume']]
@@ -19,28 +21,50 @@ df=df[['Adj. Close','ML_PCT','PCT_Change','Adj. Volume']]
 forecast_col= 'Adj. Close'
 df.fillna(-99999,inplace=True)
 
-forecast_out = int(math.ceil(0.001*len(df)))
+forecast_out = int(math.ceil(0.01*len(df)))
 
 df['label'] = df[forecast_col].shift(-forecast_out)
-df.dropna(inplace=True)
 # print(df.head())
 
 #Features represented as Uppercase 'X'
 #Lbels represenrteed as LowerCase 'y'
 X = np.array(df.drop(['label'],1))
-y = np.array(df['label'])
 X = preprocessing.scale(X)
+X=X[:-forecast_out]
+X_lately = X[-forecast_out:]
 # X = X[:-forecast_out+1]
 # df.dropna(inplace=True)
+df.dropna(inplace=True)
+y = np.array(df['label'])
 y = np.array(df['label'])
 
 # print(len(X),len(y))
 X_train, X_test,y_train,y_test = train_test_split(X,y,test_size=0.2,random_state=42)
 
-classifier = LinearRegression()
+classifier = LinearRegression(n_jobs=-1)
 classifier.fit(X_train,y_train)
 accuracy = classifier.score(X_test,y_test)
 
-print ("Acccuracy:",accuracy)
+# print ("Acccuracy:",accuracy)
+forecast_set = classifier.predict(X_lately)
+print(forecast_set,accuracy,forecast_out)
+
+df['Forecast']  = np.nan
+
+last_date = df.iloc[-1].name
+last_unix = last_date.timestamp()
+one_day  = 86400
+next_unix = last_unix+one_day
+
+for i in forecast_set:
+    next_date = datetime.datetime.fromtimestamp(next_unix)
+    next_unix += one_day
+    df.loc[next_date] = [np.nan for _ in range(len(df.columns)-1)]+[i]
 
 
+df['Adj. Close'].plot()
+df['Forecast'].plot()
+plt.legend(loc=4)
+plt.xlabel('date')
+plt.ylabel('Price')
+plt.show()
