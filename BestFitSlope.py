@@ -3,6 +3,9 @@
 #      ----------------------
 #       ((x')^2) - ((x^2)')
 # " ' represents mean" 
+# y-intercept = y' - mx'
+#m=slope
+
 
 import statistics 
 import numpy as np
@@ -17,10 +20,10 @@ def best_fit_slope(xs,ys) :
     x_into_y_compliment = statistics.mean(xs*ys)
     square_of_compliment = x_compliment*x_compliment
     compliment_of_square = statistics.mean(xs*xs)
-
-    result = ((x_compliment*y_compliment)-x_into_y_compliment)/(square_of_compliment-compliment_of_square)
+#slope = m
+    m = ((x_compliment*y_compliment)-x_into_y_compliment)/(square_of_compliment-compliment_of_square)
     # m = (( (statistics.mean(xs) * statistics.mean(ys)) - statistics.mean(xs*ys)) / (statistics.mean(xs)*statistics.mean(xs)) - statistics.mean(xs*xs))
-    return result
+    return m
 
 hello = best_fit_slope(xs,ys)
 print(hello)
