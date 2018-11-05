@@ -21,8 +21,6 @@ def best_fit_slope(xs,ys) :
     result = ((x_compliment*y_compliment)-x_into_y_compliment)/(square_of_compliment-compliment_of_square)
     # m = (( (statistics.mean(xs) * statistics.mean(ys)) - statistics.mean(xs*ys)) / (statistics.mean(xs)*statistics.mean(xs)) - statistics.mean(xs*xs))
     return result
-print(xs.dtype)
-print(ys.dtype)
 
 hello = best_fit_slope(xs,ys)
 print(hello)
