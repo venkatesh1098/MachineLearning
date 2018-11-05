@@ -26,3 +26,14 @@ print(ys.dtype)
 
 hello = best_fit_slope(xs,ys)
 print(hello)
+
+
+
+# PEMDAS 
+# P - Parenthesis
+# E - Expponential
+# M - Multiplication
+# D - Division
+# A - Addition
+# S - Subtraction
+# Order of Mathematical Operation
