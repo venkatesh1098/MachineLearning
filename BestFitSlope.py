@@ -42,7 +42,12 @@ def best_fit_slope_and_intercept(xs,ys) :
 m,c = best_fit_slope_and_intercept(xs,ys)
 #y=mx+c
 regression_line = [(m*x)+c for x in xs]
+
+predict_x = 8
+predict_y  = (m*predict_x)+c
+
 plt.scatter(xs,ys)
+plt.scatter(predict_x,predict_y)
 plt.plot(xs, regression_line)
 plt.show()
 # print(m,c)
