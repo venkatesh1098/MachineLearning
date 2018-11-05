@@ -8,6 +8,9 @@ from sklearn.linear_model import LinearRegression
 
 import matplotlib.pyplot as plt
 from matplotlib import style
+
+import pickle
+
 style.use('ggplot')
 
 df=quandl.get('WIKI/GOOGL')
@@ -36,13 +39,18 @@ X_lately = X[-forecast_out:]
 # df.dropna(inplace=True)
 df.dropna(inplace=True)
 y = np.array(df['label'])
-y = np.array(df['label'])
 
 # print(len(X),len(y))
 X_train, X_test,y_train,y_test = train_test_split(X,y,test_size=0.2,random_state=42)
 
 classifier = LinearRegression(n_jobs=-1)
 classifier.fit(X_train,y_train)
+
+with open('linearregresseion.pickle','wb') as f:
+    pickle.dump(classifier,f)
+
+pickle_in = open('linearregresseion.pickle','rb')
+classifier = pickle.load(pickle_in)
 accuracy = classifier.score(X_test,y_test)
 
 # print ("Acccuracy:",accuracy)
