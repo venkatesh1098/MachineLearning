@@ -23,10 +23,22 @@ def best_fit_slope(xs,ys) :
 #slope = m
     m = ((x_compliment*y_compliment)-x_into_y_compliment)/(square_of_compliment-compliment_of_square)
     # m = (( (statistics.mean(xs) * statistics.mean(ys)) - statistics.mean(xs*ys)) / (statistics.mean(xs)*statistics.mean(xs)) - statistics.mean(xs*xs))
-    return m
+    return m , b
 
-hello = best_fit_slope(xs,ys)
-print(hello)
+def best_fit_slope_and_intercept(xs,ys) :
+    x_compliment= statistics.mean(xs)
+    y_compliment = statistics.mean(ys)
+    x_into_y_compliment = statistics.mean(xs*ys)
+    square_of_compliment = x_compliment*x_compliment
+    compliment_of_square = statistics.mean(xs*xs)
+#slope = m |||| b = y-intercept
+    m = ((x_compliment*y_compliment)-x_into_y_compliment)/(square_of_compliment-compliment_of_square)
+    # m = (( (statistics.mean(xs) * statistics.mean(ys)) - statistics.mean(xs*ys)) / (statistics.mean(xs)*statistics.mean(xs)) - statistics.mean(xs*xs))
+    b = y_compliment - (m * x_compliment)
+    return m , b 
+
+m,b = best_fit_slope_and_intercept(xs,ys)
+print(m,b)
 
 
 
