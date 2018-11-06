@@ -9,12 +9,30 @@
 
 import statistics 
 import numpy as np
-import matplotlib.pyplot as plt 
+import matplotlib.pyplot as plt
+import random 
+
 from matplotlib import style
 style.use('fivethirtyeight')
 
-xs = np.array([1,2,3,4,5,6],dtype=np.float64)
-ys = np.array([5,4,6,5,6,7],dtype=np.float64)
+#commenteed out for including random datasets
+# xs = np.array([1,2,3,4,5,6],dtype=np.float64)
+# ys = np.array([5,4,6,5,6,7],dtype=np.float64)
+
+def create_datasets(how_many, variance , step=2, correlation=False):#correlation if true value =Positive False =Negative
+    val = 1 
+    ys = []
+    for i in range(how_many):
+        y= val +random.randrange(-variance,variance)
+        ys.append(y)
+        if correlation and correlation =='pos':
+            val+=step
+        elif correlation and correlation == 'neg':
+            val-=step
+
+    xs = [i for i in range(len(ys))]   
+           
+    return np.array(xs,dtype= np.float64),np.array(ys,dtype=np.float64)
 
 def best_fit_slope(xs,ys) :
     x_compliment= statistics.mean(xs)
@@ -48,6 +66,8 @@ def coeffecient_of_determination(ys_origin,ys_line):
     squared_error_y_mean = squared_error(ys_origin,y_mean_line)
     return 1-(squared_error_regression/squared_error_y_mean)
 
+
+xs,ys = create_datasets(40, 40, 2, correlation = 'pos')
 
 m,c = best_fit_slope_and_intercept(xs,ys)
 #y=mx+c
