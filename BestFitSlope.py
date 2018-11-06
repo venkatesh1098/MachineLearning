@@ -39,12 +39,25 @@ def best_fit_slope_and_intercept(xs,ys) :
     c = y_compliment - (m * x_compliment)
     return m , c 
 
+def squared_error(ys_origin,ys_line):
+    return sum((ys_line-ys_origin)**2) 
+
+def coeffecient_of_determination(ys_origin,ys_line):
+    y_mean_line = [statistics.mean(ys_origin)for y in ys_origin]
+    squared_error_regression = squared_error(ys_origin,ys_line) 
+    squared_error_y_mean = squared_error(ys_origin,y_mean_line)
+    return 1-(squared_error_regression/squared_error_y_mean)
+
+
 m,c = best_fit_slope_and_intercept(xs,ys)
 #y=mx+c
 regression_line = [(m*x)+c for x in xs]
 
 predict_x = 8
 predict_y  = (m*predict_x)+c
+
+r_squared = coeffecient_of_determination(ys,regression_line) 
+print(r_squared)
 
 plt.scatter(xs,ys)
 plt.scatter(predict_x,predict_y)
