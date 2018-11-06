@@ -67,8 +67,8 @@ def coeffecient_of_determination(ys_origin,ys_line):
     return 1-(squared_error_regression/squared_error_y_mean)
 
 
-xs,ys = create_datasets(40, 40, 2, correlation = 'pos')
-
+xs,ys = create_datasets(40, 10, 2, correlation = 'pos')#changing/decreasing the variance increase the coeeficent of determination
+#if coeeficent is change to false /neg   we get an ugly dataset
 m,c = best_fit_slope_and_intercept(xs,ys)
 #y=mx+c
 regression_line = [(m*x)+c for x in xs]
